@@ -1,0 +1,64 @@
+ ############ create temp dir ###########  
+    - name: Create a DIR
+      win_file:
+        path: C:\temp
+        state: directory
+
+ ############ copy files from local to remote ########### 
+    - name: Copy file with owner and permissions
+      win_copy:
+        src: "{{ item }}"
+        dest: C:\temp\
+      with_items:
+      - "{{ role_path }}/files/"
+
+ ############ check the files in temp dir ###########
+    - name:
+      win_shell: dir
+      args:
+        chdir: C:\temp\
+
+############ download nginx 1.20.2 ###########
+    - name: download nginx 1.20.2
+      win_get_url:
+        url: http://nginx.org/download/nginx-1.20.2.zip
+        dest: C:\temp\
+
+############ check the files in temp dir ###########
+    - name:
+      win_shell: dir
+      args:
+        chdir: C:\temp\  
+
+############ create dir for nginx ###########      
+    - name: Create a DIR
+      win_file:
+        path: C:\nginx
+        state: directory
+
+############ unzip the nginx-1.20.2.zip file ###########        
+    - name:
+      win_unzip:
+        src: C:\temp\nginx-1.20.2.zip
+        dest: C:\nginx\
+
+############ start nginx service ###########
+    - name: Start nginx
+      win_shell: .\nginx.exe
+      args:
+        chdir: C:\nginx\nginx-1.20.2\
+      async: 180
+      poll: 0
+
+############ start nginx at startup ###########
+    - name: Copy a folder recursively where the source is on the remote host
+      win_copy:
+        src: C:\temp\nginx_start.bat
+        dest: C:\ProgramData\Microsoft\Windows\Start Menu\Programs\StartUp\
+        remote_src: True
+
+########### check the status of Nginx  ##########
+    - name:
+      win_shell: tasklist /fi "imagename eq nginx.exe"
+
+

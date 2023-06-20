@@ -1,0 +1,14 @@
+
+########### Install chocolatey  ##########
+    - name: Ensure chocolatey is present
+      win_chocolatey:
+        name: chocolatey
+        state: present
+        
+########### Install and configure Windows agent  ##########
+    - name: Install azure-pipelines-agent
+      win_chocolatey:
+        name: azure-pipelines-agent
+        version: '2.195.1'
+        state: present
+        package_params: "'/Directory:{{ az_agent_dir }} /Token:{{ pat }} /AgentName:{{ agent_name }} /Pool:{{ agent_pool_name }} /Url:https://dev.azure.com/{{ organization_name }}'"

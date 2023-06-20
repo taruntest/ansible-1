@@ -1,0 +1,28 @@
+---
+########### Install chocolatey  ##########
+- name: Ensure chocolatey is present
+  win_chocolatey:
+    name: chocolatey
+    state: present
+
+########### Install JAVA with chocolatey  ##########
+- name: Install Java
+  win_chocolatey:
+    name: openjdk8
+    version: 8.332.09
+    state: present
+########### Create JAVA_HOME path without bin  ##########
+- name: Set Java_home
+  win_environment:
+    state: present
+    name: JAVA_HOME
+    value: 'C:\Program Files\OpenJDK\openjdk-8u332-b09\'
+    level: machine
+########### Add java path with bin  ##########
+- name: Add Java to path
+  win_path:
+    elements:
+      - 'C:\Program Files\OpenJDK\openjdk-8u332-b09\bin'
+########### check the status of java  ##########
+- name:
+  win_shell: java -version

@@ -1,0 +1,13 @@
+########### Install chocolatey  ##########
+    - name: Ensure chocolatey is present
+      win_chocolatey:
+        name: chocolatey
+        state: present
+
+########### Install JAVA with chocolatey  ##########
+    - name: Install pgadmin4
+      win_chocolatey:
+        name: pgadmin4
+        version: '6.11'
+        state: present
+      register: pgadmin

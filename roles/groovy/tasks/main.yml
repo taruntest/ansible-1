@@ -1,0 +1,42 @@
+ ############ create temp dir ###########  
+    - name: Create a DIR
+      win_file:
+        path: C:\temp
+        state: directory
+
+ ############ Download groovy ###########
+    - name: Download the groovy
+      win_get_url:
+        url: https://groovy.jfrog.io/artifactory/dist-release-local/groovy-zips/apache-groovy-binary-2.4.17.zip
+        dest: C:\temp\
+        force: no
+
+############ create dir for groovy ###########      
+    - name: Create a DIR
+      win_file:
+        path: C:\groovy
+        state: directory
+
+############ unzip the groovy file ###########        
+    - name:
+      win_unzip:
+        src: C:\temp\apache-groovy-binary-2.4.17.zip
+        dest: C:\groovy\
+
+########### Create GROOVY_HOME path without bin  ##########
+    - name: Set Groovy_home
+      win_environment:
+        state: present
+        name: GROOVY_HOME
+        value: 'C:\groovy\groovy-2.4.17\'
+        level: machine
+
+########### Add groovy path with bin  ##########
+    - name: Add groovy to path
+      win_path:
+        elements:
+          - 'C:\groovy\groovy-2.4.17\bin'
+
+########### check the status of groovy  ##########
+    - name:
+      win_shell: groovy -v

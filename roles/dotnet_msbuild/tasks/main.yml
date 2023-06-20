@@ -1,0 +1,54 @@
+ ############ create temp dir ###########  
+    - name: Create a DIR
+      win_file:
+        path: C:\temp
+        state: directory
+
+############ download dotnet_6.0.14_msbuild_17.3 X64  ###########
+    - name: download dotnet_6.0.14_msbuild_17.3 X64
+      win_get_url:
+        url: https://dotnet.microsoft.com/en-us/download/dotnet/thank-you/sdk-6.0.406-windows-x64-binaries
+        dest: C:\temp\
+# ############ download dotnet_6.0.14_msbuild_17.3 X32  ###########
+#     - name: download dotnet_6.0.14_msbuild_17.3 X32
+#       win_get_url:
+#         url: https://dotnet.microsoft.com/en-us/download/dotnet/thank-you/sdk-6.0.406-windows-x86-binaries
+#         dest: C:\temp\
+
+############ check the files in temp dir ###########
+    - name:
+      win_shell: dir
+      args:
+        chdir: C:\temp\  
+
+############ create dir for dotnet_6.0.14 ###########      
+    - name: Create a DIR
+      win_file:
+        path: C:\dotnet_6.0.14
+        state: directory
+
+############ unzip the dotnet file ###########        
+    - name:
+      win_unzip:
+        src: C:\temp\dotnet-sdk-6.0.406-win-x64.zip
+        dest: C:\dotnet_6.0.14\
+
+# ############ unzip the dotnet file ###########        
+#     - name:
+#       win_unzip:
+#         src: C:\temp\dotnet-sdk-6.0.406-win-x32.zip
+#         dest: C:\dotnet_6.0.14\
+
+############ configure dotnet_6.0.14 ###########
+    - name: Ensure that system32 and Powershell are present on the global system path, and in the specified order
+      win_path:
+        elements:
+        - 'C:\dotnet_6.0.14\'
+
+########### check the status/version of dotnet  ##########
+    - name: check dotnet version
+      win_shell: dotnet --version
+
+########### check the status/version of MSBuild  ##########
+    - name: check MSBuild version
+      win_shell: dotnet msbuild --version

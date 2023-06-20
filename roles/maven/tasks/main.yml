@@ -1,0 +1,41 @@
+ ############ create temp dir ###########  
+    - name: Create a DIR
+      win_file:
+        path: C:\temp
+        state: directory
+
+############ download maven 3.8.4 ###########
+    - name: download maven 3.8.4
+      win_get_url:
+        url: https://archive.apache.org/dist/maven/maven-3/3.8.4/binaries/apache-maven-3.8.4-bin.zip
+        dest: C:\temp\
+
+############ check the files in temp dir ###########
+    - name:
+      win_shell: dir
+      args:
+        chdir: C:\temp\  
+
+############ create dir for maven ###########      
+    - name: Create a DIR
+      win_file:
+        path: C:\maven
+        state: directory
+
+############ unzip the maven file ###########        
+    - name:
+      win_unzip:
+        src: C:\temp\apache-maven-3.8.4-bin.zip
+        dest: C:\maven\
+
+############ configure maven ###########
+    - name: Ensure that system32 and Powershell are present on the global system path, and in the specified order
+      win_path:
+        elements:
+        - 'C:\maven\apache-maven-3.8.4\bin'
+
+########### check the status of maven  ##########
+    - name:
+      win_shell: mvn -version
+
+

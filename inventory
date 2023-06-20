@@ -1,0 +1,8 @@
+[windows]
+windows10 ansible_host=20.193.245.31
+[windows:vars]
+ansible_user=genxadmin
+ansible_password=genxadmin@1234
+ansible_port=5986
+ansible_connection=winrm
+ansible_winrm_server_cert_validation=ignore

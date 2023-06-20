@@ -1,0 +1,20 @@
+############ agent directory ################
+
+az_agent_dir: C:/agent
+
+
+########## create pool name before passing a value below #########
+
+agent_pool_name: VMagentpool 
+
+
+########### organization name #############
+
+organization_name: https://dev.azure.com/CSDNAAzureOffers
+
+
+############## custom name #############
+
+agent_name: AgentByAutomation
+
+

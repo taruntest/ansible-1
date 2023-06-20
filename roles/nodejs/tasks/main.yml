@@ -1,0 +1,26 @@
+ ############ create temp dir ###########  
+    - name: Create a DIR
+      win_file:
+        path: C:\temp
+        state: directory
+
+ ############ Download Nodejs ###########
+    - name: Download the nodejs
+      win_get_url:
+        url: https://nodejs.org/download/release/v14.16.1/node-v14.16.1-x64.msi
+        dest: C:\temp\
+        force: no
+
+############ Install nodejs ###########
+    - name: Install nodejs
+      win_package:
+        path: C:\temp\node-v14.16.1-x64.msi
+        state: present
+
+########### check the status of node  ##########
+    - name:
+      win_shell: node -v
+
+
+
+

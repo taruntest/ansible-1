@@ -1,0 +1,54 @@
+ ############ create temp dir ###########  
+    - name: Create a DIR
+      win_file:
+        path: C:\temp
+        state: directory
+
+############ download docker 17.09.0 ###########
+    - name: download docker 17.09.0
+      win_get_url:
+        url: https://download.docker.com/win/static/stable/x86_64/docker-17.09.0-ce.zip
+        dest: C:\temp\
+
+############ check the files in temp dir ###########
+    - name:
+      win_shell: dir
+      args:
+        chdir: C:\temp\  
+
+############ create dir for docker ###########      
+    - name: Create a DIR
+      win_file:
+        path: C:\docker\
+        state: directory
+
+############ unzip the docker file ###########        
+    - name: uzip docker
+      win_unzip:
+        src: C:\temp\docker-17.09.0-ce.zip
+        dest: C:\docker\
+
+############ copy docker to version DIR ###########
+    - name: Copy a folder recursively where the source is on the remote host
+      win_copy:
+        src: C:\docker\docker\
+        dest: C:\docker\docker-17.09.0-ce
+        remote_src: True
+
+############ remove docker DIR ###########
+    - name: Copy a folder recursively where the source is on the remote host
+      win_file:
+        path: C:\docker\docker
+        state: absent
+        
+############ configure docker ###########
+    - name: Ensure that system32 and Powershell are present on the global system path, and in the specified order
+      win_path:
+        elements:
+        - 'C:\docker\docker-17.09.0-ce'
+
+########### check the status of docker  ##########
+    - name:
+      win_shell: docker -v
+
+

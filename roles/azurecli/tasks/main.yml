@@ -1,0 +1,24 @@
+ ############ create temp dir ###########
+    - name: Create a DIR
+      win_file:
+        path: C:\temp
+        state: directory
+
+ ############ Download azurecli ###########
+    - name: Download the azurecli
+      win_get_url:
+        url: https://azcliprod.blob.core.windows.net/msi/azure-cli-2.3.0.msi
+        dest: C:\temp\
+        force: no
+
+############ Install azurecli ###########
+    - name: Install azurecli
+      win_package:
+        path: C:\temp\azure-cli-2.3.0.msi
+        state: present
+############ configure azure cli ###########
+    - name: Ensure global system path, and in the specified order
+      win_path:
+        elements:
+        - 'C:\Program Files (x86)\Microsoft SDKs\Azure\CLI2\wbin'
+
